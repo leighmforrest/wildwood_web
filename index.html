@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <title>WildWood Web</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#" data-bind="click: resetDisplay">
+            <p>WildWood Web</p>
+          </a>
+        </div>
+      </div>
+      </nav>
+      <div class="toggle">|||</div>
+      <div class="pins">
+          <input data-bind="textInput: filter" />
+          <ul data-bind="foreach:filteredAttractions">
+            <li data-bind="click: $parent.displayedAttraction, text: $data.name"></li>
+          </ul>
+      </div>
+      <div class="container">
+          <section class="streetview">
+              <h3>WHOO!!!</h3>
+          </section>
+          <section id="map">
+          </section>
+          <section data-bind="foreach: display">
+              <h2 data-bind="text: $data.name"></h2>
+              <p data-bind="text: $data.formattedAddress"></p>
+          </section>
+      </div>
+      <!-- javascript files -->
+      <script src="bower_components/jquery/dist/jquery.min.js" charset="utf-8"></script>
+      <script src="bower_components/knockout/dist/knockout.js" charset="utf-8"></script>
+      <script src="bower_components/jquery-ui/jquery-ui.min.js" charset="utf-8"></script>
+      <script src="js/maps.js" charset="utf-8"></script>
+      <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFAfaFwqyTPUFJjwVnpSt2TumZskL9BZQ&callback=success" onerror="error()"></script>
+      <script src="js/app.js" charset="utf-8"></script>
+  </body>
+</html>

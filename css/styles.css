@@ -1,0 +1,43 @@
+#map {
+ height: 400px;
+ width: 100%;
+}
+
+img {
+  width: 100%;
+}
+
+input {
+  width: 100%;
+}
+
+nav.navbar.navbar-default {
+  margin-bottom: 0;
+}
+
+.toggle {
+  width: 100px;
+  height: 20px;
+  background-color: orange;
+}
+
+.pins {
+  position: absolute;
+  top: 20;
+  z-index: 10;
+  background-color: orange;
+  width: 205px;
+  height: 250px;
+  overflow-y: scroll;
+}
+
+.pins ul {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.pins li {
+  margin-left: 5px;
+  list-style: none;
+  border-bottom: 1px solid red;
+}
