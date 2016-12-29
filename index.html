@@ -21,7 +21,7 @@
       <div class="pins">
           <input data-bind="textInput: filter" />
           <ul data-bind="foreach:filteredAttractions">
-            <li data-bind="text: $data.name"></li>
+            <li data-bind="text: name, click: $parent.openInfo"></li>
           </ul>
       </div>
       <div class="container">
