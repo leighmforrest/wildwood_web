@@ -17,9 +17,13 @@
         </div>
       </div>
       </nav>
-      <!--div class="toggle">|||</div>
+      <div class="toggle">|||</div>
       <div class="pins">
-      </div-->
+          <input data-bind="textInput: filter" />
+          <ul data-bind="foreach:filteredAttractions">
+            <li data-bind="text: $data.name"></li>
+          </ul>
+      </div>
       <div class="container">
           <section class="streetview">
               <h3>WHOO!!!</h3>
