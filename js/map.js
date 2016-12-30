@@ -6,6 +6,7 @@
 var map;
 var markers = [];
 var attractionInfoWindow;
+var images = [];
 
 
 function initMap() {
@@ -38,18 +39,29 @@ function initMap() {
         // add marker to markers
         markers.push(marker);
         (function(marker, attraction) {
-
+            images = []
             // When a marker is clicked
             google.maps.event.addListener(marker, "click", function() {
                 var content = "<h5>" + marker.title + "</h5><p>"+ marker.address +"</p>";
                 content += "<p>"+ marker.town +"</p>";
+                $.ajax({
+                    url: "https://api.instagram.com/v1/locations/search",
+                    data: {
+                        access_token: "1ef5dd7a7896416593ef027f606fab1a",
+                        places: marker.name,
+                        distance: 100,
+                    },
+                    success: function(data){
+                        console.log(data);
+                    },
+                    failure: function(){
+                        alert("Unable");
+                    }
+                });
                 marker.setAnimation(google.maps.Animation.BOUNCE);
                 setTimeout(function(){ marker.setAnimation(null); }, 750);
                 attractionInfoWindow.open(map, marker);
                 attractionInfoWindow.setContent(content);
-                // marker.setIcon({
-                //     url: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
-                // });
             });
         })(marker, attraction);
     }
