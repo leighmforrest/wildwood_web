@@ -1,10 +1,11 @@
 /*
-    Array of attractions. Note: Attraction object holds a reference to a markers
-    object.
+    map: reference to the map.
+    markers: the markers.
+    attractionInfoWindow: The InfoWindow that displays attraction info.
 */
 var map;
 var markers = [];
-var atractionInfoWindow;
+var attractionInfoWindow;
 
 
 function initMap() {
@@ -17,14 +18,17 @@ function initMap() {
         center: center
     });
 
-    myinfowindow = new google.maps.InfoWindow();
+     attractionInfoWindow = new google.maps.InfoWindow();
 
     // For each attraction, make the marker and add the event listener.
     for (i = 0; i < attractions.length; i++) {
         var attraction = attractions[i];
+        console.log(attraction.name);
         marker = new google.maps.Marker({
             map: map,
-            title: attraction.title,
+            title: attraction.name,
+            address: attraction.address,
+            town: attraction.town,
             position: {
                 lat: attraction.lat,
                 lng: attraction.lng
@@ -37,10 +41,12 @@ function initMap() {
 
             // When a marker is clicked
             google.maps.event.addListener(marker, "click", function() {
+                var content = "<h5>" + marker.title + "</h5><p>"+ marker.address +"</p>";
+                content += "<p>"+ marker.town +"</p>";
                 marker.setAnimation(google.maps.Animation.BOUNCE);
                 setTimeout(function(){ marker.setAnimation(null); }, 750);
-                myinfowindow.open(map, marker);
-                myinfowindow.setContent(attraction.name);
+                attractionInfoWindow.open(map, marker);
+                attractionInfoWindow.setContent(content);
                 // marker.setIcon({
                 //     url: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
                 // });
@@ -49,6 +55,7 @@ function initMap() {
     }
 
 }
+
 
 ViewModel = function() {
     var self = this;
@@ -82,9 +89,16 @@ ViewModel = function() {
         }
     });
 
+    /* Method to open info window on a clicked list item. */
     this.openInfo = function(thisList) {
       for (var i = 0; i < markers.length; i++) {
-          console.log(markers[i].title);
+          if(thisList.name === markers[i].title){
+              // show the infowindow
+              markers[i].setVisible(true);
+              google.maps.event.trigger(markers[i], 'click');
+          }else{
+            markers[i].setVisible(false);
+          }
       }
     };
 };
