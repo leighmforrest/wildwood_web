@@ -4,11 +4,7 @@ html, body {
 
 #map {
  height: 600px;
- width: 460px;
-}
-
-img {
-  width: 100%;
+ width: 100%;
 }
 
 iframe {
@@ -32,7 +28,7 @@ nav.navbar.navbar-default {
 
 .pins {
   position: absolute;
-  top: 20;
+  top: 72px;
   z-index: 10;
   background-color: #a1bbc9;
   width: 205px;

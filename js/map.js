@@ -87,7 +87,6 @@ ViewModel = function() {
     var self = this;
     self.attractionList = ko.observableArray();
     self.filter = ko.observable('');
-    self.streetView = ko.observable("");
 
     // this is the second for-loop locations[i] that i make
     //Is there a way a can store locations[i] in a var then use it or something like that?
