@@ -1,3 +1,4 @@
+/* The application markers, hard-coded. */
 var attractions = (function(){
   return [
     {name: "Key West Cafe",

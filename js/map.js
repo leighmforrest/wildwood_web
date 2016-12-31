@@ -13,6 +13,7 @@ function initMap() {
         lng: -74.82464
     };
 
+    // Google map intialization.
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 13,
         center: center
@@ -38,8 +39,9 @@ function initMap() {
         // add marker to markers
         markers.push(marker);
         (function(marker, attraction) {
-            // When a marker is clicked
+            // When a marker is clicked, give the marker its content.
             google.maps.event.addListener(marker, "click", function() {
+
                 var content = "<h4>" + marker.title + "</h4><p>" + marker.address + "</p>";
                 content += "<p>" + marker.town + "</p><h5>Tips:</h5>";
                 // Ajax call begin
@@ -55,7 +57,9 @@ function initMap() {
                     success: function(data) {
 
                         var tips = data.response.groups[0].items[0].tips;
-                        // Note: API query only returns one result, yet it is an array.
+                        /*  Note: API query only returns one result, yet it is an array.
+                        There may be more tips on the website, and more for different
+                        types of requests, but this venue search only returns one. */
                         if(tips){
                           tips.forEach(function(tip) {
                               content += "<p>" + tip.text + "</p>";
@@ -67,7 +71,7 @@ function initMap() {
                         attractionInfoWindow.setContent(content);
                     },
                     error: function() {
-                        attractionInfoWindow.setContent("Unable. Malfunction. Need Input!");
+                        attractionInfoWindow.setContent("You are unable to connect to the Foursquare API.");
                     },
                 }); // End Ajax call
 
@@ -82,19 +86,18 @@ function initMap() {
 
 }
 
-
+/* The ViewModel for the application */
 ViewModel = function() {
     var self = this;
     self.attractionList = ko.observableArray();
     self.filter = ko.observable('');
 
-    // this is the second for-loop locations[i] that i make
-    //Is there a way a can store locations[i] in a var then use it or something like that?
+    // Add the attractions array to attractionList, one by one
     for (i = 0; i < attractions.length; i++) {
         self.attractionList.push(attractions[i]);
-        //console.log(locations[i].title.toLowerCase());
     }
 
+    // Function that filters the application.
     self.filteredAttractions = ko.computed(function() {
         // filter must be function by itself; do not use toLowerCase() here!
         var filter = self.filter();
@@ -132,7 +135,7 @@ ViewModel = function() {
 // Ready for action!
 ko.applyBindings(new ViewModel());
 
-/*Handle an error when attempting to load the map API. */
+/* Handle an error when attempting to load the map API. */
 function error() {
     alert("The Google Maps API could not be loaded.");
 }
