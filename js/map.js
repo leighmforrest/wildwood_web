@@ -6,20 +6,19 @@
 var map;
 var markers = [];
 var attractionInfoWindow;
-var images = [];
-
 
 function initMap() {
     var center = {
         lat: 38.98586,
         lng: -74.82464
     };
+
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 13,
         center: center
     });
 
-     attractionInfoWindow = new google.maps.InfoWindow();
+    attractionInfoWindow = new google.maps.InfoWindow();
 
     // For each attraction, make the marker and add the event listener.
     for (i = 0; i < attractions.length; i++) {
@@ -39,29 +38,45 @@ function initMap() {
         // add marker to markers
         markers.push(marker);
         (function(marker, attraction) {
-            images = []
             // When a marker is clicked
             google.maps.event.addListener(marker, "click", function() {
-                var content = "<h5>" + marker.title + "</h5><p>"+ marker.address +"</p>";
-                content += "<p>"+ marker.town +"</p>";
+                var content = "<h4>" + marker.title + "</h4><p>" + marker.address + "</p>";
+                content += "<p>" + marker.town + "</p><h5>Tips:</h5>";
+                // Ajax call begin
                 $.ajax({
-                    url: "https://api.instagram.com/v1/locations/search",
+                    url: "https://api.foursquare.com/v2/venues/explore/",
                     data: {
-                        access_token: "1ef5dd7a7896416593ef027f606fab1a",
-                        places: marker.name,
-                        distance: 100,
+                        client_id: "BEKYXBNXAGWHVZ3AMQXACNMYJS4SLYM21TIG5LCHFEVCSAK4",
+                        client_secret: "NYOUFNLWUCROOT50TCGBJY3IAHNKULOEM15320FHKMRLFFB4",
+                        v: 20161230,
+                        near: "Wildwood, NJ",
+                        query: marker.title
                     },
-                    success: function(data){
-                        console.log(data);
+                    success: function(data) {
+                        console.log(content);
+                        var tips = data.response.groups[0].items[0].tips;
+                        console.log(data.response.groups[0].items[0].venue)
+                            // Note: API query only returns one result, yet it is an array.
+                        if(tips){
+                          tips.forEach(function(tip) {
+                              content += "<p>" + tip.text + "</p>";
+                          });
+                        }else{
+                            // There may be no tips for venue.
+                            content += "<p>No tips for this attraction.</p>";
+                        }
+                        attractionInfoWindow.setContent(content);
                     },
-                    failure: function(){
-                        alert("Unable");
-                    }
-                });
+                    error: function() {
+                        attractionInfoWindow.setContent("Unable. Malfunction. Need Input!");
+                    },
+                }); // End Ajax call
+
                 marker.setAnimation(google.maps.Animation.BOUNCE);
-                setTimeout(function(){ marker.setAnimation(null); }, 750);
+                setTimeout(function() {
+                    marker.setAnimation(null);
+                }, 750);
                 attractionInfoWindow.open(map, marker);
-                attractionInfoWindow.setContent(content);
             });
         })(marker, attraction);
     }
@@ -103,18 +118,19 @@ ViewModel = function() {
 
     /* Method to open info window on a clicked list item. */
     this.openInfo = function(thisList) {
-      for (var i = 0; i < markers.length; i++) {
-          if(thisList.name === markers[i].title){
-              // show the infowindow
-              markers[i].setVisible(true);
-              google.maps.event.trigger(markers[i], 'click');
-          }else{
-            markers[i].setVisible(false);
-          }
-      }
+        for (var i = 0; i < markers.length; i++) {
+            if (thisList.name === markers[i].title) {
+                // show the infowindow
+                markers[i].setVisible(true);
+                google.maps.event.trigger(markers[i], 'click');
+            } else {
+                markers[i].setVisible(false);
+            }
+        }
     };
 };
 
+// Ready for action!
 ko.applyBindings(new ViewModel());
 
 /*Handle an error when attempting to load the map API. */
