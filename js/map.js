@@ -9,10 +9,6 @@ var attractionInfoWindow;
 
 function initMap() {
 
-    var bounds = new google.maps.LatLngBounds();
-
-
-
     var center = {
         lat: 38.98586,
         lng: -74.82464
@@ -23,6 +19,8 @@ function initMap() {
         zoom: 13,
         center: center
     });
+
+    attractionInfoWindow = new google.maps.InfoWindow();
 
     // For each attraction, make the marker and add the event listener.
     for (var i = 0; i < attractions.length; i++) {
