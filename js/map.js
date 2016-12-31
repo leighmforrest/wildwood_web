@@ -8,6 +8,11 @@ var markers = [];
 var attractionInfoWindow;
 
 function initMap() {
+
+    var bounds = new google.maps.LatLngBounds();
+
+
+
     var center = {
         lat: 38.98586,
         lng: -74.82464
@@ -19,10 +24,8 @@ function initMap() {
         center: center
     });
 
-    attractionInfoWindow = new google.maps.InfoWindow();
-
     // For each attraction, make the marker and add the event listener.
-    for (i = 0; i < attractions.length; i++) {
+    for (var i = 0; i < attractions.length; i++) {
         var attraction = attractions[i];
         console.log(attraction.name);
         marker = new google.maps.Marker({
@@ -92,6 +95,8 @@ function initMap() {
                 attractionInfoWindow.open(map, marker);
             });
         })(marker, attraction);
+
+        map.panTo(marker.getPosition());
     }
 
 }
@@ -140,6 +145,13 @@ ViewModel = function() {
             }
         }
     };
+
+    /* Method to display all the markers. */
+    self.resetDisplay = function(){
+        markers.forEach(function(marker){
+          marker.setVisible(true);
+        });
+      };
 };
 
 // Ready for action!
