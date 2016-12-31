@@ -39,10 +39,18 @@ function initMap() {
         // add marker to markers
         markers.push(marker);
 
+
         // Create the click listener.
         (function(marker, attraction) {
+
             // When a marker is clicked, give the marker its content.
             google.maps.event.addListener(marker, "click", function() {
+
+                markers.forEach(function(current_marker){
+                    if(current_marker !== marker){
+                        current_marker.setVisible(false);
+                    }
+                });
 
                 var content = "<h4>" + marker.title + "</h4><p>" + marker.address + "</p>";
                 content += "<p>" + marker.town + "</p><h5>Tips:</h5>";
