@@ -53,10 +53,9 @@ function initMap() {
                         query: marker.title
                     },
                     success: function(data) {
-                        console.log(content);
+
                         var tips = data.response.groups[0].items[0].tips;
-                        console.log(data.response.groups[0].items[0].venue)
-                            // Note: API query only returns one result, yet it is an array.
+                        // Note: API query only returns one result, yet it is an array.
                         if(tips){
                           tips.forEach(function(tip) {
                               content += "<p>" + tip.text + "</p>";
@@ -88,6 +87,7 @@ ViewModel = function() {
     var self = this;
     self.attractionList = ko.observableArray();
     self.filter = ko.observable('');
+    self.streetView = ko.observable("");
 
     // this is the second for-loop locations[i] that i make
     //Is there a way a can store locations[i] in a var then use it or something like that?
