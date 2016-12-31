@@ -38,6 +38,8 @@ function initMap() {
 
         // add marker to markers
         markers.push(marker);
+
+        // Create the click listener.
         (function(marker, attraction) {
             // When a marker is clicked, give the marker its content.
             google.maps.event.addListener(marker, "click", function() {
